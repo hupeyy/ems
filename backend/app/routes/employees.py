@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Path, status
 from app.models.employees import EmployeeCreate, EmployeeResponse, EmployeeUpdate
 from app.controller.employees import EmployeeController
-from app.dependencies import get_employee_controller
+from app.dependencies.employees import get_employee_controller
 
 router = APIRouter(prefix="/employees")
 

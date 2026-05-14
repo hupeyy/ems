@@ -14,6 +14,5 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = "dev-secret-key-do-not-use-in-production"
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    BCRYPT_WORK_FACTOR: int = 4
 
 settings = Settings()
