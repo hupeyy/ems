@@ -1,12 +1,16 @@
+import os
+
+os.environ.setdefault("BCRYPT_ROUNDS", "4")  # Reduce bcrypt rounds for faster tests
+os.environ.setdefault("JWT_SECRET_KEY", "dev-secret-key-do-not-use-in-production")  # Use a simple secret key for testing
 import httpx
 import pytest
-
 from fastapi.testclient import TestClient
 from motor.motor_asyncio import AsyncIOMotorClient
 import pytest_asyncio
 from app.core.settings import settings
-from app.main import app
 from app.dependencies import get_employee_db
+from app.main import app
+
 
 @pytest_asyncio.fixture()
 async def client(test_db):

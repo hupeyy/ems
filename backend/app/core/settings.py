@@ -9,4 +9,11 @@ class Settings(BaseSettings):
     MONGO_DB_NAME: str = "ems_db"
     MONGO_DB_TEST_NAME: str = "ems_test_db"
 
+
+    # security settings
+    JWT_SECRET_KEY: str = "dev-secret-key-do-not-use-in-production"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    BCRYPT_WORK_FACTOR: int = 4
+
 settings = Settings()
