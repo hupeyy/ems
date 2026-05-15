@@ -25,3 +25,11 @@ class UserInDB(BaseModel):
     hashed_password: str
     role: UserRole = "user"
     activity_log: list[ActivityLogEntry] = Field(default_factory=list)
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
