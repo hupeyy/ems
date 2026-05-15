@@ -1,8 +1,6 @@
 from app.models.users import ActivityLogEntry, UserCreate, UserResponse, UserInDB
 from motor.motor_asyncio import AsyncIOMotorDatabase
-
-class DuplicateEmailError(Exception):
-    pass
+from fastapi import HTTPException, status
 
 class UserRepository:
     def __init__(self, db: AsyncIOMotorDatabase):
@@ -12,7 +10,7 @@ class UserRepository:
 
         existing_user = await self.collection.find_one({"email": user.email})
         if existing_user is not None:
-            raise DuplicateEmailError(f"Email {user.email} is already registered")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Email {user.email} is already registered")
 
 
         result = await self.collection.insert_one(user.model_dump())
