@@ -5,7 +5,7 @@ VALID_EMPLOYEE = {
     "department": "Engineering",
     "position": "Software Engineer",
     "status": "Active",
-    "createdAt": "2024-06-01T12:00:00Z",
+    "updatedAt": "2024-06-01T12:00:00Z",
 }
 
 

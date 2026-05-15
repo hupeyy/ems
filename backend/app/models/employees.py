@@ -1,47 +1,41 @@
 from datetime import datetime, timezone
-from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, model_validator
+from typing import Optional, Literal
+from pydantic import BaseModel, EmailStr, Field
 
-# Request/Response patterns for Employees collection
-
+StatusLiteral = Literal["Active", "Inactive", "On Leave", "Terminated", "Retired"]
 class Employee(BaseModel):
     employeeId: str
     name: str
     email: EmailStr
     department: str
     position: str
-    status: str = "Active"
+    status: StatusLiteral = "Active"
 
-class EmployeeCreate(BaseModel):
+class EmployeeCreate(Employee):
     employeeId: str = Field(..., examples=["EMP12345"])
     name: str = Field(..., min_length=1, examples=["John Doe"])
     email: EmailStr = Field(..., examples=["john.doe@example.com"])
     department: str = Field(..., examples=["Engineering"])
     position: str = Field(..., examples=["Software Engineer"])
-    status: str = Field("Active", examples=["Active"])
+    status: StatusLiteral = Field("Active", examples=["Active"])
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), examples=["2024-06-01T12:00:00Z"])
 
 
-class EmployeeUpdate(BaseModel):
+class EmployeeUpdate(Employee):
+    employeeId: Optional[str] = Field(None, examples=["EMP12345"])
     name: Optional[str] = Field(None, min_length=1, examples=["John Doe"])
     email: Optional[EmailStr] = Field(None, examples=["john.doe@example.com"])
     department: Optional[str] = Field(None, examples=["Engineering"])
     position: Optional[str] = Field(None, examples=["Software Engineer"])
-    status: Optional[str] = Field(None, examples=["Active"])
-
-    @model_validator(mode="before")
-    @classmethod
-    def at_least_one_field_required(cls, values: dict) -> dict:
-        if isinstance(values, dict) and not any(v is not None for v in values.values()):
-            raise ValueError("At least one field must be provided for update")
-        return values
+    status: Optional[StatusLiteral] = Field(None, examples=["Active"])
+    updatedAt: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc), examples=["2024-06-01T12:00:00Z"])
 
 
-class EmployeeResponse(BaseModel):
+class EmployeeResponse(Employee):
     employeeId: str
     name: str
     email: EmailStr
     department: str
     position: str
-    status: str = "Active"
+    status: StatusLiteral = "Active"
     createdAt: datetime

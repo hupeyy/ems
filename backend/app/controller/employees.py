@@ -26,9 +26,14 @@ class EmployeeController:
         return EmployeeResponse(**employee)
 
     async def update_employee(self, employeeId: str, payload: EmployeeUpdate) -> EmployeeResponse:
+        if not payload.model_dump(exclude_unset=True):
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="At least one field must be provided for update")
+        if hasattr(payload, "employeeId") and payload.employeeId is not None:
+            delattr(payload, "employeeId")
         employee = await self.repo.update(employeeId, payload)
         if not employee:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employee not found")
+       
         return EmployeeResponse(**employee)
 
     async def delete_employee(self, employeeId: str) -> None:

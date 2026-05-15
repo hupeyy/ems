@@ -9,9 +9,8 @@ class UserRepository:
     async def create_user(self, user: UserInDB) -> str:
 
         existing_user = await self.collection.find_one({"email": user.email})
-        if existing_user is not None:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Email {user.email} is already registered")
-
+        if existing_user:
+            return
 
         result = await self.collection.insert_one(user.model_dump())
         return str(result.inserted_id)

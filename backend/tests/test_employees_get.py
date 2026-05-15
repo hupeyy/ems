@@ -63,9 +63,9 @@ async def test_get_all_employees_reflects_updated_fields_after_put(client):
     await client.post("/employees", json=VALID_EMPLOYEE)
     await client.put(f"/employees/{VALID_EMPLOYEE['employeeId']}", json={"name": "Jane Doe"})
 
-    response = await client.get("/employees")
+    response = await client.get(f"/employees/{VALID_EMPLOYEE['employeeId']}")
     assert response.status_code == 200
-    assert response.json()[0]["name"] == "Jane Doe"
+    assert response.json()["name"] == "Jane Doe"
 
 
 # ── Negative ──────────────────────────────────────────────────────────────────

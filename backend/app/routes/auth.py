@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from app.models.users import UserCreate, UserResponse, LoginRequest, LoginResponse
-from app.controller.auth import AuthController, get_auth_controller 
+from app.controller.auth import AuthController
+from app.dependencies.users import get_auth_controller
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
