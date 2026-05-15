@@ -6,7 +6,7 @@ VALID_USER = {
 }
 
 @pytest.fixture
-async def registered_user(client):
+async def auth_token(client):
     await client.post("/auth/register", json=VALID_USER)
     response = await client.post("/auth/login", json=VALID_USER)
     return response.json()["access_token"]

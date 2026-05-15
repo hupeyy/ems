@@ -1,9 +1,10 @@
+from fastapi import HTTPException, status, Depends, Request
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.settings import settings
-import hashlib
-import base64
 from datetime import datetime, timezone, timedelta
+from app.repository.users import UserRepository
+from app.models.users import UserInDB
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
@@ -26,3 +27,4 @@ def create_access_token(email: str, role: str) -> str:
 
 def decode_access_token(token: str) -> dict:
     return jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+
