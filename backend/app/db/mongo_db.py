@@ -17,6 +17,13 @@ async def get_test_db():
     client = await get_client()
     return client[settings.MONGO_TEST_DB_NAME]
 
+async def ensure_indexes(db):
+    await db.employees.create_index([("employeeId", 1)], unique=True, name="uq_employeeId_index", background=True)
+
+    await db.users.create_index([("email", 1)], unique=True, name="uq_email_index", background=True)
+
+
+
 async def close_client():
     global _client
     if _client is not None:

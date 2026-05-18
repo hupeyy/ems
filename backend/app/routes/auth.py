@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Request
-from app.models.users import UserCreate, UserResponse, LoginRequest, LoginResponse, UserInDB
+from app.models.users import UserCreate, UserResponse, LoginRequest, LoginResponse, UserInDB, UserRole
 from app.controller.auth import AuthController 
 from app.dependencies.users import get_current_user, get_auth_controller
 

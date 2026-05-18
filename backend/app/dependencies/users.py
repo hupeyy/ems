@@ -3,7 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.repository.users import UserRepository
 from app.controller.auth import AuthController
 from app.db.mongo_db import get_db
-from app.models.users import UserInDB
+from app.models.users import UserInDB, UserRole
 from app.auth.utils import decode_access_token
 from jose import JWTError, jwt
 
@@ -38,3 +38,10 @@ async def get_current_user(request: Request, user_repo: UserRepository = Depends
         return user
     except JWTError:
         raise _CREDENTIALS_EXCEPTION
+
+def required_role(required_role: UserRole):
+    def role_check(current_user: UserInDB = Depends(get_current_user)):
+        if current_user.role != required_role:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions")
+        return current_user
+    return role_check

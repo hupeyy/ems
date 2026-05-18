@@ -9,10 +9,9 @@ class EmployeeController:
         self.repo = repo
 
     async def create_employee(self, payload: EmployeeCreate) -> EmployeeResponse:
-        existing_employee = await self.repo.find_by_employeeId(payload.employeeId)
-        if existing_employee:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Employee with this employeeId already exists")
         employee = await self.repo.create(payload)
+        if not employee:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Employee with this employeeId already exists")
         return EmployeeResponse(**employee)
 
     async def get_all_employees(self) -> list[EmployeeResponse]:

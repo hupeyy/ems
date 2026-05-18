@@ -1,29 +1,34 @@
 VALID_EMPLOYEE = {
-    "employeeId": "EMP001",
+    "employeeId": "EMP00100",
     "name": "John Doe",
     "email": "john.doe@example.com",
     "department": "Engineering",
     "position": "Software Engineer",
-    "status": "Active",
-    "createdAt": "2024-06-01T12:00:00Z",
+    "status": "Active"
 }
 
-EXPECTED_FIELDS = {"employeeId", "name", "email", "department", "position", "status", "createdAt"}
+EXPECTED_FIELDS = {"employeeId", "name", "email", "department", "position", "status", "createdAt", "updatedAt"}
 
 
 # ── Happy Path ────────────────────────────────────────────────────────────────
 
-async def test_post_employee_returns_201_with_id_and_shape(client):
-    response = await client.post("/employees", json=VALID_EMPLOYEE)
+async def test_post_employee_returns_201_with_id_and_shape(auth_admin_client):
+    response = await auth_admin_client.post("/employees", json=VALID_EMPLOYEE)
     assert response.status_code == 201
     assert EXPECTED_FIELDS == set(response.json().keys())
-    assert response.json()["employeeId"] == VALID_EMPLOYEE["employeeId"]
+    data = response.json()
+    assert data["employeeId"] == VALID_EMPLOYEE["employeeId"]
+    assert data["name"] == VALID_EMPLOYEE["name"]
+    assert data["email"] == VALID_EMPLOYEE["email"]
+    assert data["department"] == VALID_EMPLOYEE["department"]
+    assert data["position"] == VALID_EMPLOYEE["position"]
+    assert data["status"] == VALID_EMPLOYEE["status"]
 
 
 # ── Critical ──────────────────────────────────────────────────────────────────
 
-async def test_post_employee_persists_document_to_db(client, test_db):
-    await client.post("/employees", json=VALID_EMPLOYEE)
+async def test_post_employee_persists_document_to_db(auth_admin_client, test_db):
+    await auth_admin_client.post("/employees", json=VALID_EMPLOYEE)
 
     stored = await test_db.employees.find_one({"employeeId": VALID_EMPLOYEE["employeeId"]})
     assert stored is not None
@@ -35,39 +40,39 @@ async def test_post_employee_persists_document_to_db(client, test_db):
     assert stored["status"] == VALID_EMPLOYEE["status"]
 
 
-async def test_post_employee_returns_409_on_duplicate_employee_id(client):
-    await client.post("/employees", json=VALID_EMPLOYEE)
-    response = await client.post("/employees", json=VALID_EMPLOYEE)
+async def test_post_employee_returns_409_on_duplicate_employee_id(auth_admin_client):
+    await auth_admin_client.post("/employees", json=VALID_EMPLOYEE)
+    response = await auth_admin_client.post("/employees", json=VALID_EMPLOYEE)
     assert response.status_code == 409
 
 
 # ── Negative ──────────────────────────────────────────────────────────────────
 
-async def test_post_employee_returns_422_on_missing_required_field(client):
+async def test_post_employee_returns_422_on_missing_required_field(auth_admin_client):
     payload = VALID_EMPLOYEE.copy()
     del payload["employeeId"]
-    response = await client.post("/employees", json=payload)
+    response = await auth_admin_client.post("/employees", json=payload)
     assert response.status_code == 422
 
 
-async def test_post_employee_returns_422_on_invalid_email(client):
+async def test_post_employee_returns_422_on_invalid_email(auth_admin_client):
     payload = {**VALID_EMPLOYEE, "email": "not-an-email"}
-    response = await client.post("/employees", json=payload)
+    response = await auth_admin_client.post("/employees", json=payload)
     assert response.status_code == 422
     assert "email" in response.json()["detail"][0]["loc"]
 
 
-async def test_post_employee_returns_422_on_name_too_short(client):
+async def test_post_employee_returns_422_on_name_too_short(auth_admin_client):
     payload = {**VALID_EMPLOYEE, "name": ""}
-    response = await client.post("/employees", json=payload)
+    response = await auth_admin_client.post("/employees", json=payload)
     assert response.status_code == 422
     assert "name" in response.json()["detail"][0]["loc"]
 
 
 # ── Edge ─────────────────────────────────────────────────────────────────────
 
-async def test_post_employee_defaults_status_to_active_when_omitted(client):
+async def test_post_employee_defaults_status_to_active_when_omitted(auth_admin_client):
     payload = {k: v for k, v in VALID_EMPLOYEE.items() if k != "status"}
-    response = await client.post("/employees", json=payload)
+    response = await auth_admin_client.post("/employees", json=payload)
     assert response.status_code == 201
     assert response.json()["status"] == "Active"

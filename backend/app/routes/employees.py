@@ -2,12 +2,13 @@ from fastapi import APIRouter, Depends, Path, status
 from app.models.employees import EmployeeCreate, EmployeeResponse, EmployeeUpdate
 from app.controller.employees import EmployeeController
 from app.dependencies.employees import get_employee_controller
+from app.dependencies.users import get_current_user, required_role
 
-router = APIRouter(prefix="/employees")
+router = APIRouter(prefix="/employees", tags=["employees"], dependencies=[Depends(get_current_user)])
 
 _ID = Path(..., min_length=1, pattern=r"^[A-Za-z0-9_-]+$")
 
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=EmployeeResponse)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=EmployeeResponse, dependencies=[Depends(required_role("admin"))])
 async def create_employee(payload: EmployeeCreate,
                           controller: EmployeeController = Depends(get_employee_controller)
 ) -> EmployeeResponse:
@@ -24,14 +25,14 @@ async def get_employee(employeeId: str = _ID,
 ) -> EmployeeResponse:
     return await controller.get_employee(employeeId)
 
-@router.put("/{employeeId}", status_code=status.HTTP_200_OK, response_model=EmployeeResponse)
+@router.put("/{employeeId}", status_code=status.HTTP_200_OK, response_model=EmployeeResponse, dependencies=[Depends(required_role("admin"))])
 async def update_employee(employeeId: str = _ID,
                           payload: EmployeeUpdate = ...,
                           controller: EmployeeController = Depends(get_employee_controller)
 ) -> EmployeeResponse:
     return await controller.update_employee(employeeId, payload)
 
-@router.delete("/{employeeId}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{employeeId}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(required_role("admin"))])
 async def delete_employee(employeeId: str = _ID,
                           controller: EmployeeController = Depends(get_employee_controller)
 ) -> None:

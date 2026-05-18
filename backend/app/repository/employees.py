@@ -1,14 +1,19 @@
 from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.models.employees import EmployeeCreate, EmployeeUpdate
-
+from pymongo.errors import DuplicateKeyError
+from fastapi import HTTPException, status
 class EmployeeRepository:
     def __init__(self, db: AsyncIOMotorDatabase):
         self.db = db
 
     async def create(self, payload: EmployeeCreate) -> dict:
         employee = payload.model_dump()
-        result = await self.db.employees.insert_one(employee)
+        employee["createdAt"] = datetime.now(timezone.utc)
+        try:
+            result = await self.db.employees.insert_one(employee)
+        except DuplicateKeyError:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Employee with this employeeId already exists")
         employee["_id"] = str(result.inserted_id)
         return employee
 

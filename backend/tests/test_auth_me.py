@@ -1,8 +1,8 @@
 import pytest
 
 VALID_USER = {
-    "email": "test@example.com",
-    "password": "password123",
+    "email": "john.doe@example.com",
+    "password": "securepassword123"
 }
 
 @pytest.fixture

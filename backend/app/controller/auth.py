@@ -23,6 +23,9 @@ class AuthController:
         )
         user_id = await self.user_repository.create_user(user)
 
+        if not user_id:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User with this email already exists")
+
         return UserResponse(id=str(user_id), email=payload.email, role=user.role)
     
     async def login_user(self, payload: LoginRequest) -> LoginResponse:
