@@ -1,8 +1,16 @@
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import './App.css'
 
 function App() {
   return (
-    <h1>Employee Management System</h1>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 } 
 
