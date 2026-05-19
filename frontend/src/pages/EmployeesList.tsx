@@ -18,21 +18,19 @@ function EmployeesList() {
     const [employees, setEmployees] = useState<Employee[]>([]);
 
     useEffect(() => {
-        api.get('/employees').then(res => setEmployees(res.data))
+        api.get('/employees')
+            .then(res => setEmployees(res.data))
+            .catch(err => console.error('Failed to fetch employees:', err))
     }
     ,[])
 
     return (
-        <div>
-            <h2>Employees List</h2>
-            <ul>
+        <div className="page-content">
+            <h2 className="section-title">Employees List</h2>
+            <ul className="employees-list">
                 {employees.map(emp => (
-                    <li key={emp.employeeId}>
-                        <h3>{emp.name}</h3>
-                        <p>Email: {emp.email}</p>
-                        <p>Department: {emp.department}</p>
-                        <p>Position: {emp.position}</p>
-                        <p>Status: {emp.status}</p>
+                    <li className="employee-card" key={emp.employeeId}>
+                        <strong>{emp.name}</strong> - {emp.position} in {emp.department} ({emp.status})
                     </li>
                 ))}
             </ul>

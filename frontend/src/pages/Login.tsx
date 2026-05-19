@@ -14,7 +14,7 @@ function Login() {
         e.preventDefault();
         try {
             const { data } = await api.post('/auth/login', { email, password });
-            login(data.token);
+            login(data.access_token);
             navigate('/employees');
         } catch (err) {
             setError("Invalid email or password");
@@ -22,26 +22,32 @@ function Login() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <button type="submit">Login</button>
-            {error && <p style={{color: "red"}}>{error}</p>}
-            <p>No account? <Link to="/register">Register</Link></p>
-        </form>
+        <div className="auth-wrapper">
+            <div className="auth-card">
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <h2 className="auth-title">Login</h2>
+                    <input
+                        className="form-input"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        className="form-input"
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button className="btn-primary" type="submit">Login</button>
+                    {error && <p className="error-text">{error}</p>}
+                    <p className="auth-footer">No account? <Link className="auth-link" to="/register">Register</Link></p>
+                </form>
+            </div>
+        </div>
     )
 }
 

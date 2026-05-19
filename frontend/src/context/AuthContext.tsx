@@ -3,6 +3,7 @@ import { createContext, useState, useContext, type ReactNode } from 'react'
 interface AuthContextType {
     token: string | null;
     login: (token: string) => void;
+    register: (token: string) => void;
     logout: () => void;
 }
 
@@ -15,13 +16,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(newToken);
     }
 
+    const register = (newToken: string) => {
+        localStorage.setItem('token', newToken);
+        setToken(newToken);
+    }
+
     const logout = () => {
         localStorage.removeItem('token');
         setToken(null);
     }
 
     return (
-        <AuthContext.Provider value={{ token, login, logout }}>
+        <AuthContext.Provider value={{ token, login, register, logout }}>
             {children}
         </AuthContext.Provider>
     );

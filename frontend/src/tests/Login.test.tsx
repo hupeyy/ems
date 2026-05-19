@@ -8,7 +8,7 @@ import api from '../api/axios';
 vi.mock('../api/axios');
 
 test('stored token and redirects to /employees on successful login', async () => {
-    api.post = vi.fn().mockResolvedValue({ data: { token: 'fake-jwt', token_type: 'Bearer' } });
+    api.post = vi.fn().mockResolvedValue({ data: { access_token: 'fake-jwt', token_type: 'Bearer' } });
 
     render(
         <AuthProvider>
