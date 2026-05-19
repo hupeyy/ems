@@ -8,7 +8,7 @@ import EmployeesList from "../pages/EmployeesList";
 vi.mock('../api/axios');
 
 test('render list of employees after successful login', async () => {
-    api.post = vi.fn().mockResolvedValue({ data: [{   
+    api.get = vi.fn().mockResolvedValue({ data: [{   
         "employeeId": "EMP00001",
         "name": "John Doe",
         "email": "john.doe@example.com",
@@ -26,7 +26,7 @@ test('render list of employees after successful login', async () => {
     )
 
     await waitFor(() => {
-        expect(api.post).toHaveBeenCalledWith('/auth/employees ');
+        expect(api.get).toHaveBeenCalledWith('/employees');
         expect(screen.getByText(/john doe/i)).toBeInTheDocument();
     });
 });

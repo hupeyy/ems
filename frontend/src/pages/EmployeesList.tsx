@@ -2,46 +2,41 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+
+interface Employee {
+    employeeId: string;
+    name: string;
+    email: string;
+    department: string;
+    position: string;
+    status: string;
+}
+
 
 function EmployeesList() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const { login } = useAuth();
-    const navigate = useNavigate();
+    const [employees, setEmployees] = useState<Employee[]>([]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const { data } = await api.post('/auth/login', { email, password });
-            login(data.token);
-            navigate('/employees');
-        } catch (err) {
-            setError("Invalid email or password");
-        }
+    useEffect(() => {
+        api.get('/employees').then(res => setEmployees(res.data))
     }
+    ,[])
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <button type="submit">Login</button>
-            {error && <p style={{color: "red"}}>{error}</p>}
-            <p>No account? <Link to="/register">Register</Link></p>
-        </form>
+        <div>
+            <h2>Employees List</h2>
+            <ul>
+                {employees.map(emp => (
+                    <li key={emp.employeeId}>
+                        <h3>{emp.name}</h3>
+                        <p>Email: {emp.email}</p>
+                        <p>Department: {emp.department}</p>
+                        <p>Position: {emp.position}</p>
+                        <p>Status: {emp.status}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
     )
 }
 
