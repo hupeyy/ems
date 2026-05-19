@@ -51,4 +51,25 @@ describe('authService', () => {
     expect(api.get).toHaveBeenCalledWith('/auth/me')
     expect(response).toBe(mockedResponse)
   })
+
+  test('login rejects on API error', async () => {
+    const error = new Error('Network error')
+    vi.mocked(api.post).mockRejectedValue(error)
+
+    await expect(authService.login('test@example.com', 'password123')).rejects.toThrow('Network error')
+  })
+
+  test('register rejects on API error', async () => {
+    const error = new Error('Email already exists')
+    vi.mocked(api.post).mockRejectedValue(error)
+
+    await expect(authService.register('test@example.com', 'password123')).rejects.toThrow('Email already exists')
+  })
+
+  test('me rejects on API error', async () => {
+    const error = new Error('Unauthorized')
+    vi.mocked(api.get).mockRejectedValue(error)
+
+    await expect(authService.me()).rejects.toThrow('Unauthorized')
+  })
 })

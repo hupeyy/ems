@@ -3,12 +3,15 @@ import { MemoryRouter } from "react-router-dom";
 import Login from '../pages/Login';
 import { AuthProvider } from "../context/AuthContext";
 import { test, expect, vi } from "vitest";
-import api from '../api/axios';
+import { authService } from '../services/AuthService';
 
-vi.mock('../api/axios');
+vi.mock('../services/AuthService', () => ({
+    authService: {
+        login: vi.fn().mockResolvedValue({ data: { access_token: 'fake-jwt', token_type: 'Bearer' } }),
+    }
+}));
 
 test('stored token and redirects to /employees on successful login', async () => {
-    api.post = vi.fn().mockResolvedValue({ data: { access_token: 'fake-jwt', token_type: 'Bearer' } });
 
     render(
         <AuthProvider>
@@ -23,7 +26,7 @@ test('stored token and redirects to /employees on successful login', async () =>
     fireEvent.click(screen.getByRole('button', { name: /login/i }));
 
     await waitFor(() => {
-        expect(api.post).toHaveBeenCalledWith('/auth/login', { email: 'test@example.com', password: 'password' });
+        expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password');
         expect(localStorage.getItem('token')).toBe('fake-jwt');
     });
 });

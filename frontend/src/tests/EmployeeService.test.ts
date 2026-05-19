@@ -64,4 +64,40 @@ describe('employeeService', () => {
     expect(api.delete).toHaveBeenCalledWith('/employees/EMP12345')
     expect(response).toBe(mockedResponse)
   })
+
+  test('list rejects on API error', async () => {
+    const error = new Error('Failed to fetch')
+    vi.mocked(api.get).mockRejectedValue(error)
+
+    await expect(employeeService.list()).rejects.toThrow('Failed to fetch')
+  })
+
+  test('create rejects on API error', async () => {
+    const payload = {
+      employeeId: 'EMP12345',
+      name: 'Jane Doe',
+      email: 'jane.doe@example.com',
+      department: 'Engineering',
+      position: 'Software Engineer',
+    }
+    const error = new Error('Invalid employee data')
+    vi.mocked(api.post).mockRejectedValue(error)
+
+    await expect(employeeService.create(payload)).rejects.toThrow('Invalid employee data')
+  })
+
+  test('update rejects on API error', async () => {
+    const payload = { position: 'Senior Engineer' }
+    const error = new Error('Employee not found')
+    vi.mocked(api.put).mockRejectedValue(error)
+
+    await expect(employeeService.update('EMP12345', payload)).rejects.toThrow('Employee not found')
+  })
+
+  test('remove rejects on API error', async () => {
+    const error = new Error('Cannot delete')
+    vi.mocked(api.delete).mockRejectedValue(error)
+
+    await expect(employeeService.remove('EMP12345')).rejects.toThrow('Cannot delete')
+  })
 })
