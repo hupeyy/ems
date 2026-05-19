@@ -23,7 +23,7 @@ test('stored token and redirects to /employees on successful login', async () =>
     fireEvent.click(screen.getByRole('button', { name: /login/i }));
 
     await waitFor(() => {
-        expect(api.post).toHaveBeenCalledWith('/auth/login', { username: 'test@example.com', password: 'password' });
+        expect(api.post).toHaveBeenCalledWith('/auth/login', { email: 'test@example.com', password: 'password' });
         expect(localStorage.getItem('token')).toBe('fake-jwt');
     });
 });
