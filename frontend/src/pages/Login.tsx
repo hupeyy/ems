@@ -15,7 +15,7 @@ function Login() {
         try {
             const { data } = await authService.login(email, password);
             login(data.access_token);
-            navigate('/employees');
+            navigate('/dashboard');
         } catch (err) {
             setError("Invalid email or password");
         }
