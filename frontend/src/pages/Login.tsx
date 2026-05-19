@@ -11,8 +11,8 @@ function Login() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { data } = await api.post('/auth/login', { username: email, password });
-        login(data.access_token);
+        const { data } = await api.post('/auth/login', { email, password });
+        login(data.token);
         navigate('/employees');
     }
 
