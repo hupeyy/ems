@@ -39,9 +39,10 @@ function Register() {
 
     return (
         <div className="auth-wrapper">
-            <div className="auth-card">
+            <div className="auth-card register-card">
                 <form className="auth-form" onSubmit={handleSubmit}>
                     <h2 className="auth-title">Register</h2>
+                    <p className="auth-subtitle">Create your account to access the EMS dashboard.</p>
                     <input
                         className="form-input"
                         type="email"
@@ -67,16 +68,20 @@ function Register() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
-                    <select
-                        className="form-input"
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        required
-                    >
-                        <option value="">Select Role</option>
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                    </select>
+                    <div className="role-field">
+                        <label className="field-label" htmlFor="role-select">Role</label>
+                        <select
+                            id="role-select"
+                            className="form-input"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            required
+                        >
+                            <option value="">Select Role</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
                     {error && <p className="error-message">{error}</p>}
                     <button className="form-button" type="submit">Register</button>
                 </form>
