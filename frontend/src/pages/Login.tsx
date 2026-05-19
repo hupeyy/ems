@@ -6,14 +6,19 @@ import { useAuth } from "../context/AuthContext";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { data } = await api.post('/auth/login', { email, password });
-        login(data.token);
-        navigate('/employees');
+        try {
+            const { data } = await api.post('/auth/login', { email, password });
+            login(data.token);
+            navigate('/employees');
+        } catch (err) {
+            setError("Invalid email or password");
+        }
     }
 
     return (
@@ -34,6 +39,7 @@ function Login() {
                 required
             />
             <button type="submit">Login</button>
+            {error && <p style={{color: "red"}}>{error}</p>}
             <p>No account? <Link to="/register">Register</Link></p>
         </form>
     )

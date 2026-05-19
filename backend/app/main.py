@@ -5,6 +5,7 @@ from app.routes.employees import router as employees_router
 from app.routes.auth import router as auth_router
 from app.core.settings import settings
 from app.db.mongo_db import get_db, ensure_indexes, close_client
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -17,6 +18,12 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     app = FastAPI()
     app.state.settings = settings
+    app.add_middleware(
+        CORSMiddleware, 
+        allow_origins=["http://localhost:5173"], 
+        allow_methods=["*"], 
+        allow_headers=["*"]
+    )
     app.include_router(health_router)
     app.include_router(employees_router)
     app.include_router(auth_router)
