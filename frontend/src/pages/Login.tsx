@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { authService } from "../services/AuthService";
 import { useAuth } from "../context/AuthContext";
 
 function Login() {
@@ -13,7 +13,7 @@ function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const { data } = await api.post('/auth/login', { email, password });
+            const { data } = await authService.login(email, password);
             login(data.access_token);
             navigate('/employees');
         } catch (err) {

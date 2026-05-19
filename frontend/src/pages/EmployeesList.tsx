@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { employeeService } from "../services/EmployeeService";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 
@@ -18,7 +18,7 @@ function EmployeesList() {
     const [employees, setEmployees] = useState<Employee[]>([]);
 
     useEffect(() => {
-        api.get('/employees')
+        employeeService.list()
             .then(res => setEmployees(res.data))
             .catch(err => console.error('Failed to fetch employees:', err))
     }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { authService } from "../services/AuthService";
 import { useAuth } from "../context/AuthContext";
 
 function Register() {
@@ -24,7 +24,7 @@ function Register() {
             return;
         }
         try {
-            const response = await api.post('/auth/register', { email, password });
+            const response = await authService.register(email, password);
             register(response.data.access_token);
             navigate('/login');
         } catch (err: any) {
