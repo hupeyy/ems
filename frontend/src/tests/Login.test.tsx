@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import Login from '../components/Login';
+import Login from '../pages/Login';
 import { AuthProvider } from "../context/AuthContext";
 import { test, expect, vi } from "vitest";
 import api from '../api/axios';
@@ -18,7 +18,7 @@ test('stored token and redirects to /employees on successful login', async () =>
         </AuthProvider>
     )
 
-    fireEvent.change(screen.getByPlaceholderText(/username/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText(/email/i), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByPlaceholderText(/password/i), { target: { value: 'password' } });
     fireEvent.click(screen.getByRole('button', { name: /login/i }));
 
