@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { employeeService } from '../services/EmployeeService'
+import { employeeService } from '../services/employeeService'
 import { useEmployees } from '../hooks/useEmployees'
 
-vi.mock('../services/EmployeeService', () => ({
+vi.mock('../services/employeeService', () => ({
   employeeService: {
     list: vi.fn(),
   },

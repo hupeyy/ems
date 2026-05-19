@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { employeeService } from '../services/EmployeeService'
+import { employeeService } from '../services/employeeService'
 
 export interface Employee {
   employeeId: string

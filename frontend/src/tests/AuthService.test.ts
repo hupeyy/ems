@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import api from '../api/axios'
-import { authService } from '../services/AuthService'
+import { authService } from '../services/authService'
 
 vi.mock('../api/axios', () => ({
   default: {

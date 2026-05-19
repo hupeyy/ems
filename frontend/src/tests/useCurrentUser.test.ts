@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import { authService } from '../services/AuthService'
+import { authService } from '../services/authService'
 import { useCurrentUser } from '../hooks/useCurrentUser'
 
-vi.mock('../services/AuthService', () => ({
+vi.mock('../services/authService', () => ({
   authService: {
     me: vi.fn(),
   },

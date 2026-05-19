@@ -13,7 +13,7 @@ vi.mock("react-router-dom", async () => {
 	};
 });
 
-vi.mock("../hooks/UseCurrentUser", () => ({
+vi.mock("../hooks/useCurrentUser", () => ({
 	useCurrentUser: () => mockUseCurrentUser(),
 }));
 
@@ -64,9 +64,9 @@ describe("Dashboard", () => {
 
 		render(<Dashboard />);
 
-		expect(screen.getByText(/email:/i)).toBeInTheDocument();
-		expect(screen.getByText(/admin@example.com/i)).toBeInTheDocument();
-		expect(screen.getByText(/role:/i)).toBeInTheDocument();
+  expect(screen.getByText(/Email:/i)).toBeInTheDocument();
+  expect(screen.getByText(/admin@example.com/i)).toBeInTheDocument();
+  expect(screen.getByText(/Role:/i)).toBeInTheDocument();
 		expect(screen.getByText(/^admin$/i)).toBeInTheDocument();
 	});
 

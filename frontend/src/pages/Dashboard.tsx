@@ -1,4 +1,4 @@
-import { useCurrentUser } from "../hooks/UseCurrentUser";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {

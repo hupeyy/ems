@@ -2,10 +2,10 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { test, expect, vi } from "vitest";
-import { employeeService } from '../services/EmployeeService';
+import { employeeService } from '../services/employeeService';
 import EmployeesList from "../pages/EmployeesList";
 
-vi.mock('../services/EmployeeService', () => ({
+vi.mock('../services/employeeService', () => ({
     employeeService: {
         list: vi.fn().mockResolvedValue({ data: [{
             "employeeId": "EMP00001",

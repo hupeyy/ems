@@ -2,10 +2,10 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext";
 import { test, expect, vi } from "vitest";
-import { authService } from '../services/AuthService';
+import { authService } from '../services/authService';
 import Register from "../pages/Register";
 
-vi.mock('../services/AuthService', () => ({
+vi.mock('../services/authService', () => ({
     authService: {
         register: vi.fn().mockResolvedValue({ data: { access_token: 'fake-token' } }),
     }

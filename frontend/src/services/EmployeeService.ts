@@ -21,8 +21,9 @@ export interface EmployeeUpdate {
 }
 
 export const employeeService = {
-  list:   ()                              => api.get('/employees'),
-  create: (data: EmployeeCreate)          => api.post('/employees', data),
+  list:   ()                                 => api.get('/employees'),
+  get:    (id: string)                       => api.get(`/employees/${id}`),
+  create: (data: EmployeeCreate)             => api.post('/employees', data),
   update: (id: string, data: EmployeeUpdate) => api.put(`/employees/${id}`, data),
-  remove: (id: string)                    => api.delete(`/employees/${id}`),
+  remove: (id: string)                       => api.delete(`/employees/${id}`),
 }

@@ -3,9 +3,9 @@ import { MemoryRouter } from "react-router-dom";
 import Login from '../pages/Login';
 import { AuthProvider } from "../context/AuthContext";
 import { test, expect, vi } from "vitest";
-import { authService } from '../services/AuthService';
+import { authService } from '../services/authService';
 
-vi.mock('../services/AuthService', () => ({
+vi.mock('../services/authService', () => ({
     authService: {
         login: vi.fn().mockResolvedValue({ data: { access_token: 'fake-jwt', token_type: 'Bearer' } }),
     }
