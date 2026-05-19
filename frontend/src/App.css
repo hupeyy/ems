@@ -2,6 +2,67 @@
    App.css — Employee Management System
    ============================================================ */
 
+/* ── Header ──────────────────────────────────────────────── */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 32px;
+  height: 60px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.3px;
+  margin-right: auto;
+}
+
+.app-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-link {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-link:hover {
+  background: #f1f5f9;
+  color: var(--color-text);
+}
+
+.btn-logout {
+  padding: 7px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.btn-logout:hover {
+  border-color: var(--color-error);
+  color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
 /* ── Auth Layout ─────────────────────────────────────────── */
 
 .auth-wrapper {
